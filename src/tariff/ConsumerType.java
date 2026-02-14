@@ -1,9 +1,9 @@
 package tariff;
 
 public enum ConsumerType {
-    RESIDENTIAL(4),
-    COMMERCIAL(10),
-    INDUSTRIAL(8);
+    RESIDENTIAL(4.3),
+    COMMERCIAL(11.6),
+    INDUSTRIAL(14.1);
 
     private final double pricePerKwh;
 
