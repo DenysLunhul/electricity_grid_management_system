@@ -31,6 +31,9 @@ public abstract class Meter {
     }
 
     public Reading getLastReading(){
+        if (this.getReadingHistory().isEmpty()){
+            return null;
+        }
         return this.getReadingHistory().getLast();
     }
 
