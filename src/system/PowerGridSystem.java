@@ -4,7 +4,7 @@ import meters.*;
 import java.util.HashMap;
 
 public class PowerGridSystem {
-    private HashMap<String, Consumer> consumers;
+    private final HashMap<String, Consumer> consumers;
     private static int nextConsumerId = 1;
     private static int nextMeterId = 1;
 
@@ -35,7 +35,6 @@ public class PowerGridSystem {
         if (consumers.containsKey(id)) {
             consumers.remove(id);
             System.out.println("Consumer with ID: " + id + " was deleted");
-            return;
         } else {
             System.out.println("Consumer with ID: " + id + " not found");
         }

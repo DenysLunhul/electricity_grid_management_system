@@ -8,14 +8,12 @@ import billing.Bill;
 import java.util.Scanner;
 
 public class ConsoleUI {
-    private Scanner scanner;
-    private PowerGridSystem system;
-    private BillingService billingService;
+    private final Scanner scanner;
+    private final PowerGridSystem system;
 
     public ConsoleUI() {
         this.scanner = new Scanner(System.in);
         this.system = new PowerGridSystem();
-        this.billingService = new BillingService();
     }
 
     public void start() {

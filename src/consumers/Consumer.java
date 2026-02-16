@@ -8,7 +8,7 @@ public abstract class Consumer {
     private final String id;
     private final String name;
     private final String address;
-    private ArrayList<Meter> meters;
+    private final ArrayList<Meter> meters;
 
     public Consumer(String id, String name, String address){
         this.id = id;

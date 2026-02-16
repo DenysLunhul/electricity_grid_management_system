@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public abstract class Meter {
     private final String id;
     private final String installationDate;
-    private ArrayList<Reading> readingHistory;
+    private final ArrayList<Reading> readingHistory;
 
     public Meter(String id, String installationDate){
         this.id = id;

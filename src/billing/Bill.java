@@ -33,14 +33,14 @@ public class Bill {
         System.out.println("═══════════════════════════════════════");
         System.out.println("        ELECTRICITY BILL");
         System.out.println("═══════════════════════════════════════");
-        System.out.println("Bill Number: " + this.id);
-        System.out.println("Date: " + this.date);
+        System.out.println("Bill Number: " + this.getId());
+        System.out.println("Date: " + this.getDate());
         System.out.println("───────────────────────────────────────");
         System.out.println("Consumer: " + this.consumer.getName());
         System.out.println("Address: " + this.consumer.getAddress());
         System.out.println("Consumer Type: " + this.consumer.getType());
         System.out.println("───────────────────────────────────────");
-        System.out.println("Consumption: " + String.format("%.2f", this.consumption) + " kWh");
+        System.out.println("Consumption: " + String.format("%.2f", this.getConsumption()) + " kWh");
         System.out.println("Tariff: " + this.consumer.getType().getPricePerKwh() + " UAH/kWh");
         System.out.println("───────────────────────────────────────");
         System.out.println("TOTAL AMOUNT: " + String.format("%.2f", this.payCost) + " UAH");
