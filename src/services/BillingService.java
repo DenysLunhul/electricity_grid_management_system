@@ -21,11 +21,12 @@ public class BillingService {
     }
 
     private static ArrayList<Double> calculateTotalConsumption(Consumer consumer, String meterID){
-        ArrayList<Double> totalConsumption = null;
+        ArrayList<Double> totalConsumption = new ArrayList<>();
         for (Meter meter : consumer.getMeters()){
             if (meter.getId().equals(meterID)){
                 totalConsumption = meter.calculateConsumption();
-            };
+                break;
+            }
         }
         return totalConsumption;
     }

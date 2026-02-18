@@ -42,6 +42,21 @@ public class Bill implements Displayable{
         this.consumption = consumption;
     }
 
+    private class HeaderItem implements Displayable {
+        private final String label;
+        private final String value;
+
+        private HeaderItem(String label, String value) {
+            this.label = label;
+            this.value = value;
+        }
+
+        @Override
+        public void display() {
+            System.out.println(label + ": " + value);
+        }
+    }
+
     public static class LineItem implements Displayable{
         private String label;
         private double amount;
@@ -111,7 +126,9 @@ public class Bill implements Displayable{
 
             lines.clear();
 
-            if (size == 1) {
+            if (size == 0) {
+                lines.add(new LineItem("No Readings", 0.0));
+            } else if (size == 1) {
                 Double v0 = consumption.get(0);
                 double value = v0 == null ? 0.0 : v0;
                 totalConsumption = value;
@@ -136,9 +153,11 @@ public class Bill implements Displayable{
                 lines.add(new LineItem("Semi-Peak Reading", semiPeak));
                 lines.add(new LineItem("Night Reading", night));
             } else {
-                for (Double value : consumption) {
-                    if (value != null) {
-                        totalConsumption += value;
+                if (consumption != null) {
+                    for (Double value : consumption) {
+                        if (value != null) {
+                            totalConsumption += value;
+                        }
                     }
                 }
                 lines.add(new LineItem("Total Readings", totalConsumption));
@@ -171,14 +190,14 @@ public class Bill implements Displayable{
         System.out.println("═══════════════════════════════════════");
         System.out.println("        ELECTRICITY BILL");
         System.out.println("═══════════════════════════════════════");
-        System.out.println("Bill Number: " + this.getId());
-        System.out.println("Date: " + this.getDate());
+        new HeaderItem("Bill Number", this.getId()).display();
+        new HeaderItem("Date", this.getDate()).display();
         System.out.println("───────────────────────────────────────");
-        System.out.println("Consumer: " + this.consumer.getName());
-        System.out.println("Address: " + this.consumer.getAddress());
-        System.out.println("Consumer Type: " + this.consumer.getType());
-        System.out.println("Meter ID: " + this.meterId);
-        System.out.println("Tariff: " + this.consumer.getType().getPricePerKwh() + " UAH/kWh");
+        new HeaderItem("Consumer", this.consumer.getName()).display();
+        new HeaderItem("Address", this.consumer.getAddress()).display();
+        new HeaderItem("Consumer Type", this.consumer.getType().toString()).display();
+        new HeaderItem("Meter ID", this.meterId).display();
+        new HeaderItem("Tariff", this.consumer.getType().getPricePerKwh() + " UAH/kWh").display();
         System.out.println("───────────────────────────────────────");
         BillHelper helper = new BillHelper(this.consumer.getType().getPricePerKwh(), this.consumption, 5);
         for (LineItem line : helper.getLines()) {
