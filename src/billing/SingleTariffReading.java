@@ -1,5 +1,7 @@
 package billing;
 
+import java.util.ArrayList;
+
 public class SingleTariffReading extends Reading{
     private final double reading;
     public SingleTariffReading(String date, double reading){
@@ -12,8 +14,10 @@ public class SingleTariffReading extends Reading{
     }
 
     @Override
-    public double getTotalReading() {
-        return this.reading;
+    public ArrayList<Double> getTotalReading() {
+        ArrayList<Double> res = new ArrayList<>();
+        res.add(this.getReading());
+        return res;
     }
 
     @Override

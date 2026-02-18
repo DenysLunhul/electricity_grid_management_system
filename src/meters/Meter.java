@@ -37,16 +37,7 @@ public abstract class Meter {
         return this.getReadingHistory().getLast();
     }
 
-    public double calculateConsumption(){
-        if (this.getReadingHistory().isEmpty()){
-            return 0;
-        }
-        if (this.getReadingHistory().size() == 1){
-            return this.getReadingHistory().getFirst().getTotalReading();
-        }
-        return this.getReadingHistory().getLast().getTotalReading() -
-                this.getReadingHistory().get(readingHistory.size() - 2).getTotalReading();
-    }
+    public abstract ArrayList<Double> calculateConsumption();
 
     public abstract void updateReadings(double... values);
 }

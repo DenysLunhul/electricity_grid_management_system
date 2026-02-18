@@ -1,5 +1,7 @@
 package billing;
 
+import java.util.ArrayList;
+
 public class DualTariffReading extends Reading{
     private final double dayReading;
     private final double nightReading;
@@ -18,8 +20,11 @@ public class DualTariffReading extends Reading{
     }
 
     @Override
-    public double getTotalReading() {
-        return this.dayReading + (this.nightReading * 0.5);
+    public ArrayList<Double> getTotalReading() {
+        ArrayList<Double> res = new ArrayList<>();
+        res.add(this.getDayReading());
+        res.add(this.getNightReading());
+        return res;
     }
 
     @Override

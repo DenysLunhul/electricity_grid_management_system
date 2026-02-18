@@ -4,31 +4,29 @@ import billing.Bill;
 import consumers.Consumer;
 import meters.Meter;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class BillingService {
     private static int idCounter = 1;
 
-    public static Bill generateBill(Consumer consumer){
+    public static Bill generateBill(Consumer consumer, String meterID){
         String id = generateBillId();
         String date = LocalDate.now().toString();
-        double totalConsumption = calculateTotalConsumption(consumer);
-        double totalCost = calculateTotalCost(totalConsumption, consumer);
-        return new Bill(consumer, id, date, totalConsumption, totalCost);
+        ArrayList<Double> totalConsumption = calculateTotalConsumption(consumer, meterID);
+        return new Bill(consumer, id, date, meterID, totalConsumption);
     }
 
     private static String generateBillId() {
         return "BILL" + String.format("%05d", idCounter++);
     }
 
-    private static double calculateTotalConsumption(Consumer consumer){
-        double totalConsumption = 0;
+    private static ArrayList<Double> calculateTotalConsumption(Consumer consumer, String meterID){
+        ArrayList<Double> totalConsumption = null;
         for (Meter meter : consumer.getMeters()){
-            totalConsumption += meter.calculateConsumption();
+            if (meter.getId().equals(meterID)){
+                totalConsumption = meter.calculateConsumption();
+            };
         }
         return totalConsumption;
-    }
-
-    private static double calculateTotalCost(double consumption, Consumer consumer){
-        return consumption * consumer.getType().getPricePerKwh();
     }
 }

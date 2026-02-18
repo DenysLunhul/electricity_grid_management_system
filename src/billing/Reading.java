@@ -1,5 +1,7 @@
 package billing;
 
+import java.util.ArrayList;
+
 public abstract class Reading {
     private final String date;
 
@@ -11,6 +13,6 @@ public abstract class Reading {
         return this.date;
     }
 
-    public abstract double getTotalReading();
+    public abstract ArrayList<Double> getTotalReading();
     public abstract void display();
 }
