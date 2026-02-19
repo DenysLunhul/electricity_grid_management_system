@@ -42,7 +42,7 @@ public class Bill implements Displayable{
         this.consumption = consumption;
     }
 
-    private class HeaderItem implements Displayable {
+    private static class HeaderItem implements Displayable {
         private final String label;
         private final String value;
 
@@ -58,28 +58,17 @@ public class Bill implements Displayable{
     }
 
     public static class LineItem implements Displayable{
-        private String label;
-        private double amount;
-
-        public LineItem() {
-        }
+        private final String label;
+        private final double amount;
 
         public LineItem(String label, double amount) {
             this.label = label;
             this.amount = amount;
         }
 
-        public void setLabel(String label) {
-            this.label = label;
-        }
-
-        public void setAmount(double amount) {
-            this.amount = amount;
-        }
-
         @Override
         public void display() {
-            System.out.printf("%-20s: %.2f UAH%n", label, amount);
+            System.out.printf("%-20s: %.2f%n", label, amount);
         }
     }
 
@@ -129,7 +118,7 @@ public class Bill implements Displayable{
             if (size == 0) {
                 lines.add(new LineItem("No Readings", 0.0));
             } else if (size == 1) {
-                Double v0 = consumption.get(0);
+                Double v0 = consumption.getFirst();
                 double value = v0 == null ? 0.0 : v0;
                 totalConsumption = value;
                 lines.add(new LineItem("Reading", value));
@@ -153,18 +142,24 @@ public class Bill implements Displayable{
                 lines.add(new LineItem("Semi-Peak Reading", semiPeak));
                 lines.add(new LineItem("Night Reading", night));
             } else {
-                if (consumption != null) {
-                    for (Double value : consumption) {
-                        if (value != null) {
-                            totalConsumption += value;
-                        }
+                for (Double value : consumption) {
+                    if (value != null) {
+                        totalConsumption += value;
                     }
                 }
                 lines.add(new LineItem("Total Readings", totalConsumption));
             }
 
+
             double baseCost = totalConsumption * pricePerKwh;
-            double taxAmount = baseCost * (taxRate / 100);
+            TaxCalculator taxCalc = new TaxCalculator() {
+                @Override
+                public double calculateTax(double baseCost, double taxRate) {
+                    return baseCost * (taxRate / 100);
+                }
+            };
+
+            double taxAmount = taxCalc.calculateTax(baseCost, taxRate);
             totalCost = baseCost + taxAmount;
 
             lines.add(new LineItem("Base Cost", baseCost));
