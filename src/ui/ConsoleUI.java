@@ -1,10 +1,13 @@
 package ui;
 
+import java.util.Comparator;
 import consumers.Consumer;
 import meters.Meter;
 import system.PowerGridSystem;
 import services.BillingService;
 import billing.Bill;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ConsoleUI {
@@ -49,6 +52,9 @@ public class ConsoleUI {
                 case 8:
                     handleGenerateBill();
                     break;
+                case 9:
+                    handleGenerateAllBills();
+                    break;
                 case 0:
                     running = false;
                     System.out.println("Program finished it's work");
@@ -73,6 +79,7 @@ public class ConsoleUI {
         System.out.println("6. Display Consumer Meters");
         System.out.println("7. Enter Meter Reading");
         System.out.println("8. Generate Bill");
+        System.out.println("9. Generate Bills by all Meters");
         System.out.println("0. Exit");
         System.out.println("═══════════════════════════════════════");
         System.out.print("Enter choice: ");
@@ -211,9 +218,41 @@ public class ConsoleUI {
         String consumerId = scanner.nextLine();
 
         Consumer consumer = system.findConsumer(consumerId);
+
+        System.out.print("Enter Meter ID: ");
+        String meterID = scanner.nextLine();
+
         if (consumer == null) return;
 
-        Bill bill = BillingService.generateBill(consumer);
+        Bill bill = BillingService.generateBill(consumer, meterID);
         bill.display();
+    }
+
+    private void handleGenerateAllBills(){
+        System.out.print("Enter consumer ID: ");
+        String consumerId = scanner.nextLine();
+
+        Consumer consumer = system.findConsumer(consumerId);
+        if (consumer == null) {
+            return;
+        }
+
+        ArrayList<Bill> bills = new ArrayList<>();
+
+        for (Meter meter: consumer.getMeters()){
+            Bill bill = BillingService.generateBill(consumer, meter.getId());
+            bills.add(bill);
+        }
+
+        bills.sort(new Comparator<Bill>() {
+            @Override
+            public int compare(Bill a, Bill b) {
+                return Double.compare(a.getTotalCost(5), b.getTotalCost(5));
+            }
+        });
+
+        for (Bill bill : bills) {
+            bill.display();
+        }
     }
 }

@@ -1,5 +1,7 @@
 package billing;
 
+import java.util.ArrayList;
+
 public class TripleTariffReading extends Reading{
     private final double peakReading;
     private final double secondPeakReading;
@@ -24,8 +26,12 @@ public class TripleTariffReading extends Reading{
     }
 
     @Override
-    public double getTotalReading() {
-        return (this.peakReading * 1.5) + this.secondPeakReading + (this.nightReading * 0.4);
+    public ArrayList<Double> getTotalReading() {
+        ArrayList<Double> res = new ArrayList<>();
+        res.add(this.getPeakReading());
+        res.add(this.getSecondPeakReading());
+        res.add(this.getNightReading());
+        return res;
     }
 
     @Override
